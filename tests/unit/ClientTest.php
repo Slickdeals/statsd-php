@@ -317,4 +317,30 @@ class ClientTest extends TestCase
         $message = $this->connection->getLastMessage();
         $this->assertEquals('test.barfoo:666|s|#tag:value,tag2:value2', $message);
     }
+
+    public function testTimeClosureRecursive()
+    {
+        $evald = $this->client->time(
+            'foo',
+            function ()  {
+                return $this->client->time(
+                    'foo',
+                    function ()  {
+                        return 'foobar';
+                    },
+                    1.0,
+                    ['run' => 2]
+                );
+            },
+            1.0,
+            ['run' => 1]
+        );
+
+        $this->assertEquals('foobar', $evald);
+
+        $messages = $this->connection->getMessages();
+        $this->assertEquals(2, count($messages));
+        $this->assertMatchesRegularExpression('/test\.foo\:[\d\.]*\|ms\|#run:2/', $messages[0]);
+        $this->assertMatchesRegularExpression('/test\.foo\:[\d\.]*\|ms\|#run:1/', $messages[1]);
+    }
 }

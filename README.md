@@ -1,7 +1,5 @@
 # statsd-php
 
-⚠️ This repo is abandoned and will no longer be maintained. Please use [slickdeals/statsd](https://github.com/Slickdeals/statsd-php) instead.
-
 A PHP client library for the statistics daemon ([statsd](https://github.com/etsy/statsd)) intended to send metrics from PHP applications.
 
 [![Build Status](https://github.com/slickdeals/statsd-php/workflows/Build%20statsd-php/badge.svg)](https://github.com/slickdeals/statsd-php/actions)

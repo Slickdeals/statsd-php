@@ -125,10 +125,12 @@ class Client
      * starts the timing for a key
      *
      * @param string $key
+     * @param array $tags
      */
-    public function startTiming(string $key): void
+    public function startTiming(string $key, array $tags = []): void
     {
-        $this->timings[$key] = gettimeofday(true);
+        $timingKey = $key . md5(json_encode($tags));
+        $this->timings[$timingKey] = gettimeofday(true);
     }
 
     /**
@@ -143,11 +145,12 @@ class Client
     public function endTiming(string $key, float $sampleRate = 1.0, array $tags = []): ?float
     {
         $end = gettimeofday(true);
+        $timingKey = $key . md5(json_encode($tags));
 
-        if (isset($this->timings[$key])) {
-            $timing = ($end - $this->timings[$key]) * 1000;
+        if (isset($this->timings[$timingKey])) {
+            $timing = ($end - $this->timings[$timingKey]) * 1000;
             $this->timing($key, $timing, $sampleRate, $tags);
-            unset($this->timings[$key]);
+            unset($this->timings[$timingKey]);
 
             return $timing;
         }
@@ -207,7 +210,7 @@ class Client
      */
     public function time(string $key, Closure $block, float $sampleRate = 1.0, array $tags = [])
     {
-        $this->startTiming($key);
+        $this->startTiming($key, $tags);
         try {
             return $block();
         } finally {

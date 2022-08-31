@@ -49,6 +49,11 @@ class ConnectionMock implements Connection
         }
     }
 
+    public function getMessages(): array
+    {
+        return $this->messages;
+    }
+
     public function sendMessages(array $messages): void
     {
         $this->messages[] = join("\n", $messages);
