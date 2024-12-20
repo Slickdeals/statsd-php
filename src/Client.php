@@ -195,7 +195,7 @@ class Client
      * @param float $sampleRate
      * @param array $tags
      */
-    public function memory(string $key, int $memory = null, float $sampleRate = 1.0, array $tags = []): void
+    public function memory(string $key, ?int $memory = null, float $sampleRate = 1.0, array $tags = []): void
     {
         if ($memory === null) {
             $memory = memory_get_peak_usage();
