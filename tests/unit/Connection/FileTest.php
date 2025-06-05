@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domnikl\Test\Statsd\Connection;
 
 use Domnikl\Statsd\Connection\File;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class FileTest extends TestCase
@@ -22,8 +23,8 @@ class FileTest extends TestCase
 
     /**
      * @param string $metric
-     * @dataProvider dataForSendWrongData
      */
+    #[DataProvider('dataForSendWrongData')]
     public function testSendWrongData(string $metric)
     {
         $connection = new File('php://memory');
@@ -34,7 +35,7 @@ class FileTest extends TestCase
     /**
      * @return string[]
      */
-    public function dataForSendWrongData()
+    public static function dataForSendWrongData()
     {
         return [
             [''],

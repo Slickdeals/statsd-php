@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Domnikl\Test\Statsd;
 
 use Domnikl\Statsd\Client as Client;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
@@ -58,7 +60,7 @@ class ClientTest extends TestCase
         );
     }
 
-    public function sampleRateData()
+    public static function sampleRateData()
     {
         return [
             [0.9, 1, '0.9'],
@@ -66,10 +68,8 @@ class ClientTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testCountWithSamplingRate(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -82,10 +82,8 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testCountWithSamplingRateAndTags(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -107,10 +105,8 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testIncrementWithSamplingRate(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -123,10 +119,8 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testIncrementWithSamplingRateAndTags(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -148,10 +142,8 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testDecrementWithSamplingRate(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -164,10 +156,8 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testDecrementWithSamplingRateAndTags(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -190,10 +180,8 @@ class ClientTest extends TestCase
     }
 
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testTimingWithSamplingRate(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -232,10 +220,8 @@ class ClientTest extends TestCase
         $this->assertGreaterThanOrEqual($sleep / 1000, $this->client->endTiming($key));
     }
 
-    /**
-     * @dataProvider sampleRateData
-     * @group sampling
-     */
+    #[DataProvider('sampleRateData')]
+    #[Group('sampling')]
     public function testStartEndTimingWithSamplingRate(float $globalSampleRate, float $sampleRate, string $expectedSampleRate)
     {
         $client = new Client($this->connection, 'test', $globalSampleRate);
@@ -265,9 +251,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @group memory
-     */
+    #[Group('memory')]
     public function testMemory()
     {
         $this->client->memory('foo.bar');
@@ -277,9 +261,7 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @group memory
-     */
+    #[Group('memory')]
     public function testMemoryProfile()
     {
         $this->client->startMemoryProfile('foo.bar');
