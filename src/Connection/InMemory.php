@@ -15,7 +15,7 @@ class InMemory implements Connection
     /**
      * @var string[]
      */
-    private $messages = [];
+    private array $messages = [];
 
     public function send(string $message): void
     {

@@ -129,7 +129,7 @@ class Client
      */
     public function startTiming(string $key, array $tags = []): void
     {
-        $timingKey = $key . md5(json_encode($tags));
+        $timingKey = $key . md5((string)json_encode($tags));
         $this->timings[$timingKey] = gettimeofday(true);
     }
 
@@ -145,7 +145,7 @@ class Client
     public function endTiming(string $key, float $sampleRate = 1.0, array $tags = []): ?float
     {
         $end = gettimeofday(true);
-        $timingKey = $key . md5(json_encode($tags));
+        $timingKey = $key . md5((string)json_encode($tags));
 
         if (isset($this->timings[$timingKey])) {
             $timing = ($end - $this->timings[$timingKey]) * 1000;
@@ -266,10 +266,10 @@ class Client
             $key = $this->namespace . '.' . $key;
         }
 
-        $message = $key . ':' . $value . '|' . $type;
+        $message = $key . ':' . ((string)$value) . '|' . $type;
 
         if ($sampleRate < 1) {
-            $sampledData = $message . '|@' . $sampleRate;
+            $sampledData = $message . '|@' . ((string)$sampleRate);
         } else {
             $sampledData = $message;
         }

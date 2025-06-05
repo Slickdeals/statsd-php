@@ -14,36 +14,28 @@ abstract class InetSocket implements Connection
 
     /**
      * host name
-     *
-     * @var string
      */
-    protected $host;
+    protected string $host;
 
     /**
      * port number
-     *
-     * @var int
      */
-    protected $port;
+    protected int $port;
 
     /**
      * Socket timeout
-     *
-     * @var int
      */
-    private $timeout;
+    private int $timeout;
 
     /**
      * Persistent connection
-     *
-     * @var bool
      */
-    private $persistent = false;
+    private bool $persistent;
 
     /**
-     * @var int
+     * @var int<1, max>
      */
-    private $maxPayloadSize;
+    private int $maxPayloadSize;
 
     /**
      * instantiates the Connection object and a real connection to statsd
@@ -64,10 +56,18 @@ abstract class InetSocket implements Connection
         $this->host = $host;
         $this->port = $port;
         $this->persistent = $persistent;
-        $this->maxPayloadSize = $mtu -
+        $maxPayloadSize = $mtu -
             self::IP_HEADER_SIZE -
             $this->getProtocolHeaderSize() -
             strlen(self::LINE_DELIMITER);
+
+        if ($maxPayloadSize <= 0) {
+            throw new \InvalidArgumentException(
+                'The maximum payload size must be greater than 0. Please check the MTU value.'
+            );
+        }
+
+        $this->maxPayloadSize = $maxPayloadSize;
 
         if ($timeout === null) {
             $this->timeout = (int) ini_get('default_socket_timeout');
