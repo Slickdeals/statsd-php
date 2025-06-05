@@ -25,7 +25,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
     - name: phpcs
-      run: vendor/bin/php-cs-fixer fix --diff --dry-run -v
+      run: PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --diff --dry-run -v
 
     - name: psalm
       run: vendor/bin/psalm --show-info=false
