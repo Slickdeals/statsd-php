@@ -6,6 +6,8 @@ namespace Domnikl\Statsd\Connection;
 
 use Domnikl\Statsd\Connection;
 
+use function ini_get;
+
 abstract class InetSocket implements Connection
 {
     private const LINE_DELIMITER = "\n";
@@ -14,35 +16,39 @@ abstract class InetSocket implements Connection
 
     /**
      * host name
+     * @var string
      */
-    protected string $host;
+    protected $host;
 
     /**
      * port number
+     * @var int<1, 65535>
      */
-    protected int $port;
+    protected $port;
 
     /**
      * Socket timeout
+     * @var int<0, max>
      */
-    private int $timeout;
+    private $timeout;
 
     /**
      * Persistent connection
+     * @var bool
      */
-    private bool $persistent;
+    private $persistent;
 
     /**
      * @var int<1, max>
      */
-    private int $maxPayloadSize;
+    private $maxPayloadSize;
 
     /**
      * instantiates the Connection object and a real connection to statsd
      *
      * @param string $host Statsd hostname
-     * @param int $port Statsd port
-     * @param ?int $timeout Connection timeout
+     * @param int<1, 65535> $port Statsd port
+     * @param ?int<0, max> $timeout Connection timeout
      * @param bool $persistent (default FALSE) Use persistent connection or not
      * @param int $mtu Maximum Transmission Unit (default: 1500)
      */
@@ -70,7 +76,9 @@ abstract class InetSocket implements Connection
         $this->maxPayloadSize = $maxPayloadSize;
 
         if ($timeout === null) {
-            $this->timeout = (int) ini_get('default_socket_timeout');
+            /** @var int<0, max> $timeout */
+            $timeout = (int) ini_get('default_socket_timeout');
+            $this->timeout = $timeout;
         } else {
             $this->timeout = $timeout;
         }

@@ -7,7 +7,10 @@ namespace Domnikl\Statsd;
  */
 trait StatsdAwareTrait
 {
-    protected Client $statsd;
+    /**
+     * @var Client
+     */
+    protected $statsd;
 
     /**
      * Sets the StatsD client.
