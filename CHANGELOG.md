@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.2.2]
+### Changed
+- Testing newer versions of PHP 8
+- Set $memory as nullable
+
 ## [3.2.1]
 ### Changed
 - Set sample rate to be minimum of global and metric sample rate
