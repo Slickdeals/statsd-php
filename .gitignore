@@ -16,3 +16,4 @@ stats.log
 
 # php-cs-fixer
 .php-cs-fixer.cache
+/.phpunit.cache/test-results

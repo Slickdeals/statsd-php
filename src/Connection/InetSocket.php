@@ -6,6 +6,8 @@ namespace Domnikl\Statsd\Connection;
 
 use Domnikl\Statsd\Connection;
 
+use function ini_get;
+
 abstract class InetSocket implements Connection
 {
     private const LINE_DELIMITER = "\n";
@@ -14,34 +16,30 @@ abstract class InetSocket implements Connection
 
     /**
      * host name
-     *
      * @var string
      */
     protected $host;
 
     /**
      * port number
-     *
-     * @var int
+     * @var int<1, 65535>
      */
     protected $port;
 
     /**
      * Socket timeout
-     *
-     * @var int
+     * @var int<0, max>
      */
     private $timeout;
 
     /**
      * Persistent connection
-     *
      * @var bool
      */
-    private $persistent = false;
+    private $persistent;
 
     /**
-     * @var int
+     * @var int<1, max>
      */
     private $maxPayloadSize;
 
@@ -49,8 +47,8 @@ abstract class InetSocket implements Connection
      * instantiates the Connection object and a real connection to statsd
      *
      * @param string $host Statsd hostname
-     * @param int $port Statsd port
-     * @param ?int $timeout Connection timeout
+     * @param int<1, 65535> $port Statsd port
+     * @param ?int<0, max> $timeout Connection timeout
      * @param bool $persistent (default FALSE) Use persistent connection or not
      * @param int $mtu Maximum Transmission Unit (default: 1500)
      */
@@ -64,13 +62,23 @@ abstract class InetSocket implements Connection
         $this->host = $host;
         $this->port = $port;
         $this->persistent = $persistent;
-        $this->maxPayloadSize = $mtu -
+        $maxPayloadSize = $mtu -
             self::IP_HEADER_SIZE -
             $this->getProtocolHeaderSize() -
             strlen(self::LINE_DELIMITER);
 
+        if ($maxPayloadSize <= 0) {
+            throw new \InvalidArgumentException(
+                'The maximum payload size must be greater than 0. Please check the MTU value.'
+            );
+        }
+
+        $this->maxPayloadSize = $maxPayloadSize;
+
         if ($timeout === null) {
-            $this->timeout = (int) ini_get('default_socket_timeout');
+            /** @var int<0, max> $timeout */
+            $timeout = (int) ini_get('default_socket_timeout');
+            $this->timeout = $timeout;
         } else {
             $this->timeout = $timeout;
         }

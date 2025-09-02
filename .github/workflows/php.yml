@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['7.4', '8.0', '8.1', '8.2', '8.3']
+        php-versions: ['8.1', '8.2', '8.3', '8.4']
 
     steps:
     - name: Checkout
@@ -25,7 +25,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
     - name: phpcs
-      run: vendor/bin/php-cs-fixer fix --diff --dry-run -v
+      run: PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --diff --dry-run -v
 
     - name: psalm
       run: vendor/bin/psalm --show-info=false

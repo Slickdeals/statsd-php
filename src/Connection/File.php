@@ -32,7 +32,7 @@ class File implements Connection
 
     private function open(): void
     {
-        $this->handle = @fopen($this->filePath, $this->mode);
+        $this->handle = @fopen($this->filePath, $this->mode) ?: null;
     }
 
     public function send(string $message): void

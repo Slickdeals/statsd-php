@@ -51,5 +51,10 @@
         <RawObjectIteration errorLevel="info" />
 
         <InvalidStringClass errorLevel="info" />
+        <UnusedClass errorLevel="info" />
+        <MissingOverrideAttribute errorLevel="info" />
+        <ClassMustBeFinal errorLevel="suppress"/>
+        <PossiblyUnusedMethod errorLevel="info" />
+        <PossiblyUnusedReturnValue errorLevel="info" />
     </issueHandlers>
 </psalm>
