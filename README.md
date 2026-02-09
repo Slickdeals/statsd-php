@@ -10,7 +10,7 @@ Originally a fork of [domnikl/statsd-php](https://github.com/domnikl/statsd-php)
 
 The best way to install statsd-php is to use Composer and add the following to your project's `composer.json` file:
 
-```javascript
+```json
 {
     "require": {
         "slickdeals/statsd": "^3.2"
