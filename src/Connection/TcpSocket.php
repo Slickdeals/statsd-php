@@ -56,10 +56,10 @@ class TcpSocket extends InetSocket implements Connection
     /**
      * @param string $host
      * @param int $port
-     * @param int $timeout
+     * @param float $timeout
      * @param bool $persistent
      */
-    protected function connect(string $host, int $port, int $timeout, bool $persistent): void
+    protected function connect(string $host, int $port, float $timeout, bool $persistent): void
     {
         $errorNumber = 0;
         $errorMessage = '';

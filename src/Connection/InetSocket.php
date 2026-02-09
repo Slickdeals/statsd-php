@@ -29,7 +29,7 @@ abstract class InetSocket implements Connection
     /**
      * Socket timeout
      *
-     * @var int
+     * @var float
      */
     private $timeout;
 
@@ -50,14 +50,14 @@ abstract class InetSocket implements Connection
      *
      * @param string $host Statsd hostname
      * @param int $port Statsd port
-     * @param ?int $timeout Connection timeout
+     * @param ?float $timeout Connection timeout
      * @param bool $persistent (default FALSE) Use persistent connection or not
      * @param int $mtu Maximum Transmission Unit (default: 1500)
      */
     public function __construct(
         string $host = 'localhost',
         int $port = 8125,
-        ?int $timeout = null,
+        ?float $timeout = null,
         bool $persistent = false,
         int $mtu = 1500
     ) {
@@ -70,7 +70,7 @@ abstract class InetSocket implements Connection
             strlen(self::LINE_DELIMITER);
 
         if ($timeout === null) {
-            $this->timeout = (int) ini_get('default_socket_timeout');
+            $this->timeout = (float) ini_get('default_socket_timeout');
         } else {
             $this->timeout = $timeout;
         }
@@ -86,7 +86,7 @@ abstract class InetSocket implements Connection
         return $this->port;
     }
 
-    public function getTimeout(): int
+    public function getTimeout(): float
     {
         return $this->timeout;
     }
@@ -174,10 +174,10 @@ abstract class InetSocket implements Connection
      *
      * @param string $host
      * @param int $port
-     * @param int $timeout
+     * @param float $timeout
      * @param bool $persistent
      */
-    abstract protected function connect(string $host, int $port, int $timeout, bool $persistent): void;
+    abstract protected function connect(string $host, int $port, float $timeout, bool $persistent): void;
 
     /*
      * checks whether the socket connection is alive
