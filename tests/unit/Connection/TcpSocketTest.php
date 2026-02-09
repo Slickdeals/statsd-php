@@ -11,11 +11,11 @@ class TcpSocketTest extends TestCase
 {
     public function testInit()
     {
-        $connection = new TcpSocket('localhost', 8125, 10, true);
+        $connection = new TcpSocket('localhost', 8125, 10.0, true);
 
         $this->assertEquals('localhost', $connection->getHost());
         $this->assertEquals(8125, $connection->getPort());
-        $this->assertEquals(10, $connection->getTimeout());
+        $this->assertSame(10.0, $connection->getTimeout());
         $this->assertTrue($connection->isPersistent());
     }
 
@@ -25,7 +25,7 @@ class TcpSocketTest extends TestCase
 
         $this->assertEquals('localhost', $connection->getHost());
         $this->assertEquals(8125, $connection->getPort());
-        $this->assertEquals(ini_get('default_socket_timeout'), $connection->getTimeout());
+        $this->assertSame((float) ini_get('default_socket_timeout'), $connection->getTimeout());
         $this->assertFalse($connection->isPersistent());
     }
 
@@ -34,7 +34,7 @@ class TcpSocketTest extends TestCase
         $this->expectException(\Domnikl\Statsd\Connection\TcpSocketException::class);
         $this->expectExceptionMessage('Couldn\'t connect to host "localhost:66000":');
 
-        $connection = new TcpSocket('localhost', 66000, 1);
+        $connection = new TcpSocket('localhost', 66000, 1.0);
         $connection->send('foobar');
     }
 }
