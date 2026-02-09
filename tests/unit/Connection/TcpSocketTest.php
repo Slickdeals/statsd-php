@@ -34,7 +34,7 @@ class TcpSocketTest extends TestCase
         $this->expectException(\Domnikl\Statsd\Connection\TcpSocketException::class);
         $this->expectExceptionMessage('Couldn\'t connect to host "localhost:66000":');
 
-        $connection = new TcpSocket('localhost', 66000, 1.0);
+        $connection = new TcpSocket('localhost', 66000, 0.1);
         $connection->send('foobar');
     }
 }
