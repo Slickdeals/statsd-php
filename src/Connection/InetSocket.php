@@ -144,7 +144,7 @@ abstract class InetSocket implements Connection
         if ($this->allowFragmentation()) {
             $message = join(self::LINE_DELIMITER, $messages) . self::LINE_DELIMITER;
 
-            $result = str_split($message, $this->maxPayloadSize);
+            $result = str_split($message, max(1, $this->maxPayloadSize));
 
             return $result ?: [];
         }
